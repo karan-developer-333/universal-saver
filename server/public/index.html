@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-content">
+                <h1>My Knowledge base</h1>
+                <p id="item-count">Loading items...</p>
+            </div>
+        </header>
+
+        <main id="items-grid" class="items-grid">
+            <!-- Items injected by JS -->
+        </main>
+    </div>
+
+    <script>
+        async function fetchItems() {
+            try {
+                const response = await fetch('/api/items');
+                const items = await response.json();
+                renderItems(items);
+            } catch (err) {
+                console.error('Failed to fetch items:', err);
+                document.getElementById('item-count').textContent = 'Error loading data.';
+            }
+        }
+
+        function renderItems(items) {
+            const grid = document.getElementById('items-grid');
+            const countEl = document.getElementById('item-count');
+
+            countEl.textContent = `${items.length} bits of knowledge saved.`;
+
+            if (items.length === 0) {
+                grid.innerHTML = '<div class="empty-state">No items saved yet. Start by using the extension!</div>';
+                return;
+            }
+
+            grid.innerHTML = items.map(item => `
+                <div class="card">
+                    <div class="card-header">
+                        <span class="timestamp">${new Date(item.timestamp).toLocaleString()}</span>
+                        <a href="${item.url}" target="_blank" class="source-link">Source ↗</a>
+                    </div>
+                    <h2 class="card-title">${item.title}</h2>
+                    <div class="card-content">
+                        <blockquote>${item.selectedText}</blockquote>
+                    </div>
+                    ${item.note ? `<div class="card-note"><strong>Note:</strong> ${item.note}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        fetchItems();
+        // Refresh every 30 seconds
+        setInterval(fetchItems, 30000);
+    </script>
+</body>
+
+</html>

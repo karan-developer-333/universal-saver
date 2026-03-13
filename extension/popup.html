@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save to Knowledge</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Save to Knowledge</h1>
+            <div class="status-indicator" id="status-indicator"></div>
+        </header>
+
+        <main>
+            <div class="field">
+                <label for="page-info">Source</label>
+                <div id="page-info" class="readonly-info">
+                   <div id="page-title" class="truncate">Loading...</div>
+                   <div id="page-url" class="truncate secondary">...</div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="selection-text">Captured Content</label>
+                <textarea id="selection-text" placeholder="Select some text on the page first..."></textarea>
+            </div>
+
+            <div class="field">
+                <label for="note-input">Personal Note</label>
+                <input type="text" id="note-input" placeholder="Add a tag or note (optional)">
+            </div>
+        </main>
+
+        <footer>
+            <button id="save-btn" class="primary-btn">Save to Knowledge</button>
+            <div id="message" class="message"></div>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
