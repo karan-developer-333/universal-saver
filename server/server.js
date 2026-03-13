@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 app.use(express.static('public')); // Serve dashboard UI
 
@@ -68,6 +68,22 @@ app.post('/api/save', (req, res) => {
 
 app.get('/api/items', (req, res) => {
     res.json(loadData());
+});
+
+app.delete('/api/items/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    let savedItems = loadData();
+    const initialLength = savedItems.length;
+
+    savedItems = savedItems.filter(item => item.id !== id);
+
+    if (savedItems.length === initialLength) {
+        return res.status(404).json({ error: 'Item not found' });
+    }
+
+    saveData(savedItems);
+    console.log(`Deleted item with id: ${id}`);
+    res.json({ message: 'Item deleted successfully' });
 });
 
 app.listen(PORT, () => {

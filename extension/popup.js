@@ -2,7 +2,7 @@
  * Popup logic for "Save to Knowledge"
  */
 
-const API_ENDPOINT = 'http://localhost:3000/api/save';
+const API_ENDPOINT = 'https://universal-saver-oe90.onrender.com/api/save';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const pageTitleEl = document.getElementById('page-title');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Check server status
     try {
-        const response = await fetch('http://localhost:3000/api/items', { method: 'GET' });
+        const response = await fetch('https://universal-saver-oe90.onrender.com/api/items', { method: 'GET' });
         if (response.ok) statusIndicator.classList.add('online');
     } catch (e) {
         statusIndicator.classList.add('offline');

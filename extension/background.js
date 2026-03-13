@@ -3,7 +3,7 @@
  * Handles context menus, API requests, and offline queuing.
  */
 
-const API_ENDPOINT = 'http://localhost:3000/api/save';
+const API_ENDPOINT = 'https://universal-saver-oe90.onrender.com/api/save';
 
 // Create context menu on installation
 chrome.runtime.onInstalled.addListener(() => {

@@ -47,10 +47,15 @@
             }
 
             grid.innerHTML = items.map(item => `
-                <div class="card">
+                <div class="card" id="card-${item.id}">
                     <div class="card-header">
                         <span class="timestamp">${new Date(item.timestamp).toLocaleString()}</span>
-                        <a href="${item.url}" target="_blank" class="source-link">Source ↗</a>
+                        <div class="card-actions">
+                            <a href="${item.url}" target="_blank" class="source-link">Source ↗</a>
+                            <button class="delete-btn" onclick="deleteItem(${item.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            </button>
+                        </div>
                     </div>
                     <h2 class="card-title">${item.title}</h2>
                     <div class="card-content">
@@ -59,6 +64,26 @@
                     ${item.note ? `<div class="card-note"><strong>Note:</strong> ${item.note}</div>` : ''}
                 </div>
             `).join('');
+        }
+
+        async function deleteItem(id) {
+            if (!confirm('Are you sure you want to delete this save?')) return;
+
+            try {
+                const response = await fetch(`/api/items/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    // Refresh data
+                    fetchItems();
+                } else {
+                    alert('Failed to delete item.');
+                }
+            } catch (err) {
+                console.error('Error deleting item:', err);
+                alert('Error deleting item.');
+            }
         }
 
         fetchItems();
